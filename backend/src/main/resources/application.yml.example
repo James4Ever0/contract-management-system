@@ -1,0 +1,85 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-stacktrace: always
+    include-exception: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50000MB
+      max-request-size: 50000MB
+      file-size-threshold: 2000MB
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 1GB
+      max-request-size: 1GB
+
+  application:
+    name: contract-management-system
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://<host>:<port>/<database>
+    username: "<username>"
+    password: "<password>"
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.htguanl.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+ldap:
+  enabled: true
+  host: "<ldap-host>"
+  port: 389
+  base-dn: dc=company,dc=com
+  user-dn: cn=admin,dc=company,dc=com
+  password: "<ldap-password>"
+  sync-enabled: true
+  user-search-filter: (uid={0})
+  connection-timeout: 5000
+  operation-timeout: 10000
+  max-retries: 3
+
+dify:
+  api-url: "<dify-api-url>"
+  api-key: "<dify-api-key>"
+  timeout: 30000
+  max-retries: 3
+
+file:
+  upload:
+    base-path: ./uploads
+    contract-path: ${file.upload.base-path}/contracts
+    max-size: 5242880000000000
+
+logging:
+  level:
+    com.htguanl: debug
+    org.springframework.web: debug
+    org.apache.ibatis: debug
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'

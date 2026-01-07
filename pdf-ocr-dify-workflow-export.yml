@@ -1,0 +1,605 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: pdf-ocr
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.0.26@c1e643ac6a7732f6333a783320b4d3026fa5e31d8e7026375b98d44418d33f26
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: aiping/aiping:0.0.3@8b41c4dba89c253526df0cbe18341ed353ebb40ed8898c9f638615b4e1f2ccb9
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: atoy0m0/pdf-to-images:1.0.1@bfd6805409081d0ce320c6ecfdd0cc74a3b5e07b9d3ee2450bd53226f9ce40ae
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 100
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: tool
+      id: 1766716420474-source-1766717175309-target
+      source: '1766716420474'
+      sourceHandle: source
+      target: '1766717175309'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: iteration
+      id: 1766717175309-source-1766717284090-target
+      source: '1766717175309'
+      sourceHandle: source
+      target: '1766717284090'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1766717284090'
+        sourceType: iteration-start
+        targetType: llm
+      id: 1766717284090start-source-1766717298961-target
+      source: 1766717284090start
+      sourceHandle: source
+      target: '1766717298961'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: iteration
+        targetType: code
+      id: 1766717284090-source-1767505366341-target
+      source: '1766717284090'
+      sourceHandle: source
+      target: '1767505366341'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1767505366341-source-1767505191842-target
+      source: '1767505366341'
+      sourceHandle: source
+      target: '1767505191842'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1767505191842-source-1766717409683-target
+      source: '1767505191842'
+      sourceHandle: source
+      target: '1766717409683'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: ''
+          hint: ''
+          label: pdf
+          max_length: 48
+          options: []
+          placeholder: ''
+          required: true
+          type: file
+          variable: pdf
+      height: 87
+      id: '1766716420474'
+      position:
+        x: 78.62826671140942
+        y: 282
+      positionAbsolute:
+        x: 78.62826671140942
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Select one or more PDF files to convert to images
+            ja_JP: 画像に変換するPDFファイルを1つまたは複数選択してください
+            pt_BR: Selecione um ou mais arquivos PDF para converter em imagens
+            zh_Hans: 选择要转换为图像的一个或多个PDF文件
+          label:
+            en_US: PDF Files
+            ja_JP: PDFファイル
+            pt_BR: Arquivos PDF
+            zh_Hans: PDF文件
+          llm_description: Array of PDF files to be converted to images. Each page
+            of each PDF will be converted to a separate image.
+          max: null
+          min: null
+          name: pdf_files
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: files
+        - auto_generate: null
+          default: 72
+          form: llm
+          human_description:
+            en_US: Image resolution in DPI (dots per inch). Higher values produce
+              better quality but larger files.
+            ja_JP: DPI（ドット・パー・インチ）での画像解像度。高い値ほど品質が良くなりますがファイルサイズも大きくなります。
+            pt_BR: Resolução da imagem em DPI (pontos por polegada). Valores maiores
+              produzem melhor qualidade mas arquivos maiores.
+            zh_Hans: 以DPI（每英寸点数）为单位的图像分辨率。数值越高质量越好但文件越大。
+          label:
+            en_US: Resolution (DPI)
+            ja_JP: 解像度 (DPI)
+            pt_BR: Resolução (DPI)
+            zh_Hans: 分辨率 (DPI)
+          llm_description: 'Resolution for the output images in DPI. Default is 72.
+            Common values: 72 (web), 150 (standard), 300 (high quality).'
+          max: null
+          min: null
+          name: dpi
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: number
+        - auto_generate: null
+          default: PNG
+          form: form
+          human_description:
+            en_US: Output image format. PNG for lossless quality, JPEG for smaller
+              file sizes.
+            ja_JP: 出力画像フォーマット。PNGは可逆圧縮、JPEGはファイルサイズが小さくなります。
+            pt_BR: Formato da imagem de saída. PNG para qualidade sem perda, JPEG
+              para arquivos menores.
+            zh_Hans: 输出图像格式。PNG为无损质量，JPEG文件大小更小。
+          label:
+            en_US: Image Format
+            ja_JP: 画像フォーマット
+            pt_BR: Formato de Imagem
+            zh_Hans: 图像格式
+          llm_description: Output format for the converted images. PNG provides lossless
+            quality, JPEG provides smaller file sizes.
+          max: null
+          min: null
+          name: image_format
+          options:
+          - icon: ''
+            label:
+              en_US: PNG (Lossless)
+              ja_JP: PNG（可逆圧縮）
+              pt_BR: PNG (Sem Perda)
+              zh_Hans: PNG（无损压缩）
+            value: PNG
+          - icon: ''
+            label:
+              en_US: JPEG (Compressed)
+              ja_JP: JPEG（圧縮）
+              pt_BR: JPEG (Comprimido)
+              zh_Hans: JPEG（压缩）
+            value: JPEG
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: select
+        params:
+          dpi: ''
+          image_format: ''
+          pdf_files: ''
+        provider_id: atoy0m0/pdf-to-images/pdf-to-images
+        provider_name: atoy0m0/pdf-to-images/pdf-to-images
+        provider_type: builtin
+        selected: false
+        title: PDF-to-Images
+        tool_configurations:
+          image_format:
+            type: constant
+            value: JPEG
+        tool_description: Convert PDF pages to high-quality images using PyMuPDF.
+          Supports multiple PDFs and customizable resolution.
+        tool_label: PDF-to-Images
+        tool_name: pdf-to-images
+        tool_node_version: '2'
+        tool_parameters:
+          dpi:
+            type: constant
+            value: 72
+          pdf_files:
+            type: variable
+            value:
+            - '1766716420474'
+            - pdf
+        type: tool
+      height: 87
+      id: '1766717175309'
+      position:
+        x: 389.61512065724617
+        y: 282
+      positionAbsolute:
+        x: 389.61512065724617
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        error_handle_mode: remove-abnormal-output
+        height: 175
+        is_parallel: true
+        iterator_input_type: array[file]
+        iterator_selector:
+        - '1766717175309'
+        - files
+        output_selector:
+        - '1766717298961'
+        - text
+        output_type: array[string]
+        parallel_nums: 100
+        selected: false
+        start_node_id: 1766717284090start
+        title: OCR Iteration
+        type: iteration
+        width: 385
+      height: 175
+      id: '1766717284090'
+      position:
+        x: 701.1605780187248
+        y: 282
+      positionAbsolute:
+        x: 701.1605780187248
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 385
+      zIndex: 1
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1766717284090start
+      parentId: '1766717284090'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 725.1605780187248
+        y: 350
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1766717284090'
+        model:
+          completion_params:
+            presence_penalty: 0.1
+            temperature: 0.7
+          mode: chat
+          name: Qwen3-VL-235B-A22B-Instruct
+          provider: aiping/aiping/aiping
+        prompt_template:
+        - id: 1c5bf198-1561-414a-8c8e-ad1190d889ec
+          role: system
+          text: OCR this image. Do not output anything not in the document. Do not
+            try to talk to me. Just output what you see in the image.
+        reasoning_format: separated
+        selected: false
+        title: VLM OCR
+        type: llm
+        vision:
+          configs:
+            detail: high
+            variable_selector:
+            - '1766717284090'
+            - item
+          enabled: true
+      height: 87
+      id: '1766717298961'
+      parentId: '1766717284090'
+      position:
+        x: 128
+        y: 68
+      positionAbsolute:
+        x: 829.1605780187248
+        y: 350
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+      zIndex: 1002
+    - data:
+        outputs:
+        - value_selector: []
+          variable: ''
+        selected: false
+        title: End
+        type: end
+      height: 51
+      id: '1766717409683'
+      position:
+        x: 1800.3660983244897
+        y: 282
+      positionAbsolute:
+        x: 1800.3660983244897
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            response_format: json_schema
+            temperature: 0.7
+          mode: chat
+          name: gpt-4.1
+          provider: langgenius/openai/openai
+        prompt_config:
+          jinja2_variables: []
+        prompt_template:
+        - edition_type: basic
+          id: 496077a7-dc76-4ab9-9fc3-7fde9994372c
+          role: system
+          text: "You are a professional text to JSON converter. You would convert\
+            \ any plain text into JSON object by the example output given below.\n\
+            \nBelow you will be given a contract for info extraction.\n\nLeave any\
+            \ field missing as blank or null if it cannot be found within the contract\
+            \ content.\n\nTerms explained from Chinese:\n\n- 甲方: partyA, type string\n\
+            - 乙方: partyB, type string\n- 服务期限: servicePeriod, type string, in format\
+            \ of \"YYYY-MM-DD to YYYY-MM-DD\"\n- 合同编号: contractNo, type string\n-\
+            \ 合同名称: contractName, type string\n- 合同类型: contractType, type string\n\
+            - 客户名称: customerName, type string\n- 合同金额: contractAmount, type number,\
+            \ in RMB\n- 签署日期: signDate, type string, in format of \"YYYY-MM-DD\"\n\
+            - 生效日期: startDate, type string, in format of \"YYYY-MM-DD\"\n- 到期日期: endDate,\
+            \ type string, in format of \"YYYY-MM-DD\"\n- 付款条款: paymentTerms, type\
+            \ list[string]\n- 交付条款: deliveryTerms, type list[string]\n- 质量条款: qualityTerms,\
+            \ type list[string]\n- 违约条款: breachClause, type list[string]\n- 其他条款:\
+            \ otherTerms, type list[string]\n\nAn example for the JSON output is:\n\
+            \n{\n  \"partyA\": \"公司A\",\n  \"partyB\": \"公司B\",\n  \"servicePeriod\"\
+            : \"2024-01-01 to 2025-01-01\",\n  \"contractNo\": \"123456\",\n  \"contractName\"\
+            : \"合同名称\",\n  \"contractType\": \"合同类型\",\n  \"customerName\": \"客户名称\"\
+            ,\n  \"contractAmount\": 100000,\n  \"signDate\": \"2024-01-01\",\n  \"\
+            startDate\": \"2025-01-01\",\n  \"endDate\": \"2026-01-01\",\n  \"paymentTerms\"\
+            : [\"付款条款1\", \"付款条款2\"],\n  \"deliveryTerms\": [\"交付条款1\", \"交付条款2\"\
+            ],\n  \"qualityTerms\": [\"质量条款1\", \"质量条款2\"],\n  \"breachClause\": [\"\
+            违约条款1\", \"违约条款2\"],\n  \"otherTerms\": [\"其他条款1\", \"其他条款2\"]\n}\n\n\
+            Now you will receive a contract document, please extract the data from\
+            \ it according to the above format. Do not output anything except the\
+            \ JSON object.\n\n{{#1767505366341.result#}}"
+        reasoning_format: tagged
+        selected: true
+        structured_output:
+          schema:
+            properties:
+              breachClause:
+                items:
+                  type: string
+                type: array
+              contractAmount:
+                type: number
+              contractName:
+                type: string
+              contractNo:
+                type: string
+              contractType:
+                enum:
+                - SALES
+                - PURCHASE
+                - SERVICE
+                - OTHER
+                type: string
+              customerName:
+                type: string
+              deliveryTerms:
+                items:
+                  type: string
+                type: array
+              endDate:
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                type: string
+              otherTerms:
+                items:
+                  type: string
+                type: array
+              partyA:
+                type: string
+              partyB:
+                type: string
+              paymentTerms:
+                items:
+                  type: string
+                type: array
+              qualityTerms:
+                items:
+                  type: string
+                type: array
+              servicePeriod:
+                pattern: ^\d{4}-\d{2}-\d{2} to \d{4}-\d{2}-\d{2}$
+                type: string
+              signDate:
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                type: string
+              startDate:
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                type: string
+            required:
+            - partyA
+            - partyB
+            - servicePeriod
+            - contractNo
+            - contractName
+            - contractType
+            - customerName
+            - contractAmount
+            - signDate
+            - startDate
+            - endDate
+            - paymentTerms
+            - deliveryTerms
+            - qualityTerms
+            - breachClause
+            - otherTerms
+            type: object
+        structured_output_enabled: true
+        title: LLM Text to JSON
+        type: llm
+        vision:
+          enabled: false
+      height: 87
+      id: '1767505191842'
+      position:
+        x: 1459.7925314536155
+        y: 282
+      positionAbsolute:
+        x: 1459.7925314536155
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        code: "\ndef main(arg1: list[str]):\n    return {\n        \"result\": \"\\\
+          n\\n\".join(arg1),\n    }\n"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: Array to String
+        type: code
+        variables:
+        - value_selector:
+          - '1766717284090'
+          - output
+          value_type: array[string]
+          variable: arg1
+      height: 51
+      id: '1767505366341'
+      position:
+        x: 1144.6897567301291
+        y: 282
+      positionAbsolute:
+        x: 1144.6897567301291
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    viewport:
+      x: -377.34577499173247
+      y: -33.48916079040282
+      zoom: 0.5555543643275462
+  rag_pipeline_variables: []
